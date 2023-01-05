@@ -1,0 +1,55 @@
+<div id="pokemon_table" class="table-responsive">
+    <table class="table table-hover align-middle table-bordered table-striped" style="overflow: auto;">
+        <tbody class="table-group-divider">
+        <tr class="align-middle" style="background-color: #31994d">
+            <th style="width: 5%;">No</th>
+            <th style="width: 5%;">Poke id</th>
+            <th>Name</th>
+            <th>Type 1</th>
+            <th>Type 2</th>
+            <th style="width: 5%;">Total</th>
+            <th style="width: 5%;">Hp</th>
+            <th style="width: 5%;">Attack</th>
+            <th style="width: 5%;">Defence</th>
+            <th style="width: 5%;">Sp. att.</th>
+            <th style="width: 5%;">Sp. def.</th>
+            <th style="width: 5%;">Speed</th>
+            <th style="width: 5%;">Gen.</th>
+            <th style="width: 5%;">Legendary</th>
+            <th>Image</th>
+        </tr>
+        </tbody>
+
+        {% for pokemon in pokemon_list %}
+        <tr class="align-middle">
+            <td>{{pokemon.id}}</td>
+            <td>{{pokemon.poke_id}}</td>
+            <td><a href="{% url 'pokedexdjango:pokemon_details' id=pokemon.id %}">{{pokemon.name}}</a></td>
+            <td>{{pokemon.type_1}}</td>
+            <td>{{pokemon.type_2}}</td>
+            <td>{{pokemon.total}}</td>
+            <td>{{pokemon.hp}}</td>
+            <td>{{pokemon.attack}}</td>
+            <td>{{pokemon.defence}}</td>
+            <td>{{pokemon.sp_attack}}</td>
+            <td>{{pokemon.sp_defence}}</td>
+            <td>{{pokemon.speed}}</td>
+            <td>{{pokemon.generation}}</td>
+            <td>
+                {% if pokemon.legendary == 'True' %}
+                Yes
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td>
+                {% if pokemon_images|get_item:pokemon.poke_id %}
+                <img src="/static/images/{{ pokemon.poke_id }}.jpg" width="100" height="100" onerror="this.onerror=null;this.src='/static/images/default.png';">
+                {% else %}
+                <img src="/static/images/default.png" width="100" height="100">
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -1,0 +1,18 @@
+.form-control{
+    width: 150px;
+}
+
+.toast{
+    position: absolute;
+    z-index: 10;
+    top: 23%;
+    left: 71%;
+}
+
+#pokemon_table td, #pokemon_table th {
+  text-align: center;
+}
+
+h1.pokemon_list_header{
+    padding-bottom: 10px;
+}

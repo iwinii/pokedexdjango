@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<style>
+h1 {
+  text-align: center;
+}
+</style>
+<h1>TOP 10</h1>
+<body>
+<ul>
+    <li>
+        <a href="{% url 'pokedexdjango:top_10_pokemons' %}">TOP 10 Pokemon</a>
+    </li>
+    <li>
+        <a href="{% url 'pokedexdjango:top_10_not_legendary' %}">TOP 10 Pokemon that are not legendary</a>
+    </li>
+    <li>
+        <a href="{% url 'pokedexdjango:top_10_water' %}">TOP 10 water Pokemon</a>
+    </li>
+    <li>
+        <a href="{% url 'pokedexdjango:top_10_hp' %}">TOP 10 Pokemon with the biggest health</a>
+    </li>
+    <li>
+        <a href="{% url 'pokedexdjango:top_10_attack' %}">TOP 10 Pokemon with the biggest attack</a>
+    </li>
+    <li>
+        <a href="{% url 'pokedexdjango:top_10_defence' %}">TOP 10 Pokemon with the biggest defence</a>
+    </li>
+</ul>
+</body>
+</html>
+{% endblock  %}

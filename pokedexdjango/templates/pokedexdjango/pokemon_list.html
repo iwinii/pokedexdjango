@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<script>
+    $(document).ready(function() {
+        $(".toast").toast('show');
+    });
+</script>
+<h1 class="pokemon_list_header">Pokemon list</h1>
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto">Admin</strong>
+    <small class="text-muted">2 secs ago</small>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body">
+    Hi, thanks for visiting my page!
+  </div>
+</div>
+<form action="{{ form_action }}" method="GET">
+    <div class="row g-3 pb-1">
+        <div class="col-auto">
+            <input type="number"  min="1" max="1000" step="1" id="poke_id" name="poke_id" placeholder="poke id" class="form-control" value="{{ poke_id_param }}">
+        </div>
+        <div class="col-auto">
+<!--            <label for="name" class="form-label">Name:</label>-->
+            <input type="text" id="name" name="name" placeholder="pokemon name" class="form-control" value="{{ name_param }}">
+        </div>
+        <div class="col-auto">
+<!--            <label for="type" class="form-label">Type:</label>-->
+            <input type="text" id="type" name="type" placeholder="pokemon type" class="form-control" value="{{ type_param }}">
+        </div>
+    </div>
+    <div class="row g-3 pb-1">
+        <div class="col-auto">
+            <input type="number"  min="1" max="1000" step="1" id="total" name="total" placeholder="total" class="form-control" value="{{ total_param }}">
+        </div>
+        <div class="col-auto">
+            <input type="number" min="1" max="255" step="1" id="hp" name="hp" placeholder="pokemon hp" class="form-control" value="{{ hp_param }}">
+        </div>
+        <div class="col-auto">
+            <input type="number" min="1" max="255" step="1" id="attack" name="attack" placeholder="attack" class="form-control" value="{{ attack_param }}">
+        </div>
+    </div>
+    <div class="row g-3 pb-1">
+        <div class="col-auto">
+            <input type="number" min="1" max="255" step="1" id="defence" name="defence" placeholder="defence" class="form-control" value="{{ defence_param }}">
+        </div>
+        <div class="col-auto">
+            <input type="number" min="1" max="255" step="1" id="sp_attack" name="sp_attack" placeholder="sp attack" class="form-control" value="{{ sp_attack_param }}">
+        </div>
+        <div class="col-auto">
+            <input type="number" min="1" max="255" step="1" id="sp_defence" name="sp_defence" placeholder="sp defence" class="form-control" value="{{ sp_defence_param }}">
+        </div>
+    </div>
+    <div class="row g-3 pb-1">
+        <div class="col-auto">
+            <input type="number" min="1" max="255" step="1" id="speed" name="speed" placeholder="speed" class="form-control" value="{{ speed_param }}">
+        </div>
+        <div class="col-auto">
+            <input type="number" min="1" max="6" step="1" id="generation" name="generation" placeholder="generation" class="form-control" value="{{ generation_param }}">
+        </div>
+
+    </div>
+     <div class="row g-3 pb-1">
+        <div class="col-auto">
+            <select id="sort_by" name="sort_by" class="form-control">
+                <option value="">Sort by</option>
+                <option value="poke_id" {% if sort_by_param == 'poke_id' %}selected{% endif %}>Poke id</option>
+                <option value="name" {% if sort_by_param == 'name'%}selected{% endif %}>Name</option>
+                <option value="type_1" {% if sort_by_param == 'type_1'%}selected{% endif %}>Type 1</option>
+                <option value="type_2" {% if sort_by_param == 'type_2'%}selected{% endif %}>Type 2</option>
+                <option value="total" {% if sort_by_param == 'total'%}selected{% endif %}>Total</option>
+                <option value="hp" {% if sort_by_param == 'hp'%}selected{% endif %}>Hp</option>
+                <option value="attack" {% if sort_by_param == 'attack'%}selected{% endif %}>Attack</option>
+                <option value="defence" {% if sort_by_param == 'defence'%}selected{% endif %}>Defence</option>
+                <option value="sp_attack" {% if sort_by_param == 'sp_attack'%}selected{% endif %}>Sp attack</option>
+                <option value="sp_defence" {% if sort_by_param == 'sp_defence'%}selected{% endif %}>Sp defence</option>
+                <option value="speed" {% if sort_by_param == 'speed'%}selected{% endif %}>Speed</option>
+                <option value="generation" {% if sort_by_param == 'generation'%}selected{% endif %}>Generation</option>
+            </select>
+        </div>
+         <div class="col-auto">
+            <select id="sort_direction" name="sort_direction" class="form-control">
+                <option value="">Sort direction</option>
+                <option value="asc" {% if sort_direction_param == 'asc'%}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if sort_direction_param == 'desc'%}selected{% endif %}>Descending</option>
+            </select>
+        </div>
+    </div>
+    <div class="row g-3 pb-1">
+        <div class="col-auto">
+            <button type="submit" class="btn btn-success">Search</button>
+        </div>
+    </div>
+
+
+
+</form>
+<br>
+{% include "partials/pokemon_table.html" with pokemon_list=pokemon_list pokemon_images=pokemon_images %}
+{% endblock  %}

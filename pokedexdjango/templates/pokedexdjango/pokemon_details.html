@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<h1 class="text-center">{{pokemon.name}}</h1>
+<br>
+<!--<div class="table-responsive">-->
+<!--    <table class="table table-hover align-middle table-bordered table-striped">-->
+<!--        <tbody class="table-group-divider">-->
+<!--        <tr class="align-middle" style="background-color: pink">-->
+<!--            <th>Pokemon id</th>-->
+<!--            <th>Name</th>-->
+<!--            <th>Type 1</th>-->
+<!--            <th>Type 2</th>-->
+<!--            <th>Total</th>-->
+<!--            <th>Hp</th>-->
+<!--            <th>Attack</th>-->
+<!--            <th>Defence</th>-->
+<!--            <th>Special attack</th>-->
+<!--            <th>Special defence</th>-->
+<!--            <th>Speed</th>-->
+<!--            <th>Generation</th>-->
+<!--            <th>Legendary</th>-->
+<!--            <th>Image</th>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+
+<!--        <tr class="align-middle">-->
+<!--            <td>{{pokemon.poke_id}}</td>-->
+<!--            <td>{{pokemon.name}}</td>-->
+<!--            <td>{{pokemon.type_1}}</td>-->
+<!--            <td>{{pokemon.type_2}}</td>-->
+<!--            <td>{{pokemon.total}}</td>-->
+<!--            <td>{{pokemon.hp}}</td>-->
+<!--            <td>{{pokemon.attack}}</td>-->
+<!--            <td>{{pokemon.defence}}</td>-->
+<!--            <td>{{pokemon.sp_attack}}</td>-->
+<!--            <td>{{pokemon.sp_defence}}</td>-->
+<!--            <td>{{pokemon.speed}}</td>-->
+<!--            <td>{{pokemon.generation}}</td>-->
+<!--            <td>{{pokemon.legendary}}</td>-->
+<!--            <td><img src="/static/images/{{ pokemon.poke_id }}.jpg" width="100" height="100"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+<div><img src="/static/images/{{ pokemon.poke_id }}.jpg" width="150" height="150" class="img-responsive center-block d-block mx-auto"></div>
+<div class="table-responsive-sm row justify-content-center">
+    <table class="table table-bordered center" style="width:50%">
+        <thead>
+        <tr>
+            <th scope="row">No</th>
+            <td scope="row">{{pokemon.id}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Poke id</th>
+            <td scope="row">{{pokemon.poke_id}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Name</th>
+            <td scope="row">{{pokemon.name}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Type 1</th>
+            <td scope="row">{{pokemon.type_1}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Type 2</th>
+            <td scope="row">{{pokemon.type_2}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Total</th>
+            <td scope="row">{{pokemon.total}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Hp</th>
+            <td scope="row">{{pokemon.hp}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Attack</th>
+            <td scope="row">{{pokemon.attack}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Defence</th>
+            <td scope="row">{{pokemon.defence}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Sp attack</th>
+            <td scope="row">{{pokemon.sp_attack}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Sp defence</th>
+            <td scope="row">{{pokemon.sp_defence}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Speed</th>
+            <td scope="row">{{pokemon.name}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Generation</th>
+            <td scope="row">{{pokemon.generation}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Legendary</th>
+            <td scope="row">{{pokemon.legendary}}</td>
+        </tr>
+        </thead>
+    </table>
+</div>
+{% endblock  %}
