@@ -3,46 +3,20 @@
 {% load static %}
 <h1 class="text-center">{{pokemon.name}}</h1>
 <br>
-<!--<div class="table-responsive">-->
-<!--    <table class="table table-hover align-middle table-bordered table-striped">-->
-<!--        <tbody class="table-group-divider">-->
-<!--        <tr class="align-middle" style="background-color: pink">-->
-<!--            <th>Pokemon id</th>-->
-<!--            <th>Name</th>-->
-<!--            <th>Type 1</th>-->
-<!--            <th>Type 2</th>-->
-<!--            <th>Total</th>-->
-<!--            <th>Hp</th>-->
-<!--            <th>Attack</th>-->
-<!--            <th>Defence</th>-->
-<!--            <th>Special attack</th>-->
-<!--            <th>Special defence</th>-->
-<!--            <th>Speed</th>-->
-<!--            <th>Generation</th>-->
-<!--            <th>Legendary</th>-->
-<!--            <th>Image</th>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-
-<!--        <tr class="align-middle">-->
-<!--            <td>{{pokemon.poke_id}}</td>-->
-<!--            <td>{{pokemon.name}}</td>-->
-<!--            <td>{{pokemon.type_1}}</td>-->
-<!--            <td>{{pokemon.type_2}}</td>-->
-<!--            <td>{{pokemon.total}}</td>-->
-<!--            <td>{{pokemon.hp}}</td>-->
-<!--            <td>{{pokemon.attack}}</td>-->
-<!--            <td>{{pokemon.defence}}</td>-->
-<!--            <td>{{pokemon.sp_attack}}</td>-->
-<!--            <td>{{pokemon.sp_defence}}</td>-->
-<!--            <td>{{pokemon.speed}}</td>-->
-<!--            <td>{{pokemon.generation}}</td>-->
-<!--            <td>{{pokemon.legendary}}</td>-->
-<!--            <td><img src="/static/images/{{ pokemon.poke_id }}.jpg" width="100" height="100"></td>-->
-<!--        </tr>-->
-<!--    </table>-->
-<!--</div>-->
-<div><img src="/static/images/{{ pokemon.poke_id }}.jpg" width="150" height="150" class="img-responsive center-block d-block mx-auto"></div>
+<div class="row">
+    <div class="justify-content-center d-flex">
+        <img src="/static/images/{{ pokemon.poke_id }}.jpg" width="150" height="150" class="img-responsive">
+    </div>
+</div>
+<div class="row p-2">
+    <div class="justify-content-center d-flex">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="add-to-favourite" value="1">
+            <button type="submit" class="btn btn-success">Add to favourite</button>
+        </form>
+    </div>
+</div>
 <div class="table-responsive-sm row justify-content-center">
     <table class="table table-bordered center" style="width:50%">
         <thead>
@@ -105,4 +79,5 @@
         </thead>
     </table>
 </div>
+
 {% endblock  %}
