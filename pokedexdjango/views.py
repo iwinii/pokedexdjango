@@ -80,8 +80,15 @@ def pokemon_details(request, id):
     title = 'Pokemon Details'
 
     poke_id_param = id
-    # poke_id_param = request.GET.get('poke_id', '')
     pokemon_details = Pokemon.objects.get(id=poke_id_param)
+    current_user = request.user
+    # print(pokemon_details)
+    if request.method == "POST" and current_user.is_authenticated:
+        current_user.favourite_pokemon.add(pokemon_details)
+        current_user.save()
+        return redirect("pokedexdjango:pokemon_details",
+                        id = poke_id_param)
+
 
     return render(request,
                   'pokedexdjango/pokemon_details.html',
@@ -192,6 +199,18 @@ def __get_pokemon_images(pokemon_list) -> dict:
 
     return pokemon_images
 
+
+def favourite_pokemons(request):
+    current_user = request.user
+    pokemon_list = current_user.favourite_pokemon.all()
+
+    pokemon_images = __get_pokemon_images(pokemon_list)
+    return render(request,
+                  'pokedexdjango/favourite_pokemons.html',
+                  {
+                      'pokemon_list': pokemon_list,
+                      'pokemon_images': pokemon_images
+                  })
 
 def top_10(request):
     title = 'TOP 10'
@@ -315,9 +334,9 @@ def user_info(request):
                       context)
 
 
-def register(response):
-    if response.method == "POST":
-        form = RegisterForm(response.POST)
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
 
@@ -325,5 +344,5 @@ def register(response):
     else:
         form = RegisterForm()
 
-    return render(response, "register/register.html", {"form": form})
+    return render(request, "register/register.html", {"form": form})
 

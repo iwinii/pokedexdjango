@@ -15,4 +15,5 @@ urlpatterns = [
     path('top_10_defence/', views.top_10_defence, name='top_10_defence'),
     path('top_10_hp/', views.top_10_hp, name='top_10_hp'),
     path("register/", views.register, name="register"),
+    path("pokemon/list/favourite/", views.favourite_pokemons, name="favourite_pokemons"),
 ]
