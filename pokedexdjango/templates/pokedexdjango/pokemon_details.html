@@ -8,17 +8,31 @@
         <img src="/static/images/{{ pokemon.poke_id }}.jpg" width="150" height="150" class="img-responsive">
     </div>
 </div>
+
 {% if user.is_authenticated %}
+{% if is_favourite == False %}
 <div class="row p-2">
     <div class="justify-content-center d-flex">
         <form method="post">
             {% csrf_token %}
-            <input type="hidden" name="add-to-favourite" value="1">
+            <input type="hidden" name="add_to_favourite" value="1">
             <button type="submit" class="btn btn-success">Add to favourite</button>
         </form>
     </div>
 </div>
+{% else %}
+<div class="row p-2">
+    <div class="justify-content-center d-flex">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="remove_from_favourite" value="1">
+            <button type="submit" class="btn btn-danger">Remove from favourite</button>
+        </form>
+    </div>
+</div>
 {% endif %}
+{% endif %}
+
 <div class="table-responsive-sm row justify-content-center">
     <table class="table table-bordered center" style="width:50%">
         <thead>

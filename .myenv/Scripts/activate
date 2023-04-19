@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\iza\PycharmProjects\pokedexdjango\.myenv"
+VIRTUAL_ENV="C:\Users\Bruger\projects\pokedexdjango\.myenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

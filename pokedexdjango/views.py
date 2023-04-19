@@ -80,21 +80,42 @@ def pokemon_details(request, id):
     title = 'Pokemon Details'
 
     poke_id_param = id
+    add_to_favourite = request.POST.get('add_to_favourite', '')
+    remove_from_favourite = request.POST.get('remove_from_favourite', '')
     pokemon_details = Pokemon.objects.get(id=poke_id_param)
     current_user = request.user
-    # print(pokemon_details)
-    if request.method == "POST" and current_user.is_authenticated:
-        current_user.favourite_pokemon.add(pokemon_details)
-        current_user.save()
-        return redirect("pokedexdjango:pokemon_details",
-                        id = poke_id_param)
+    is_favourite = False
 
+    if current_user.is_authenticated:
+        my_fav_pokemon = current_user.favourite_pokemon.filter(id=poke_id_param).first()
+        if my_fav_pokemon != None:
+            is_favourite = True
+
+    if request.method == "POST" and current_user.is_authenticated:
+
+        if add_to_favourite == '1':
+            if is_favourite == True:
+                messages.add_message(request, messages.ERROR, 'You already added this pokemon to favourites!')
+                return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+            current_user.favourite_pokemon.add(pokemon_details)
+            current_user.save()
+            return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+        if remove_from_favourite == '1':
+            if is_favourite == False:
+                messages.add_message(request, messages.ERROR, 'This pokemon is not on your favourite pokemon list.')
+                return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+            current_user.favourite_pokemon.remove(pokemon_details)
+            current_user.save()
+            return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
 
     return render(request,
                   'pokedexdjango/pokemon_details.html',
                   {
                       'title': title,
-                      'pokemon': pokemon_details
+                      'pokemon': pokemon_details,
+                      'is_favourite': is_favourite
                   })
 
 
@@ -165,7 +186,6 @@ def pokemon_list(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
-
     return render(request,
                   'pokedexdjango/pokemon_list.html',
                   {
@@ -212,6 +232,7 @@ def favourite_pokemons(request):
                       'pokemon_images': pokemon_images
                   })
 
+
 def top_10(request):
     title = 'TOP 10'
     print("http://localhost:8000/top_10/")
@@ -257,7 +278,6 @@ def top_10_attack(request):
 def top_10_defence(request):
     title = 'TOP 10 Pokemons with the best defence'
 
-
     pokemon_list = Pokemon.objects.all().order_by('-defence')[:10]
 
     pokemon_images = __get_pokemon_images(pokemon_list)
@@ -274,11 +294,9 @@ def top_10_defence(request):
 def top_10_not_legendary(request):
     title = 'TOP 10 Pokemons that are not legendary'
 
-
     pokemon_list = Pokemon.objects.all().filter(legendary='False').order_by('-total')[:10]
 
     pokemon_images = __get_pokemon_images(pokemon_list)
-
 
     return render(request,
                   'pokedexdjango/top_10_not_legendary.html',
@@ -292,11 +310,9 @@ def top_10_not_legendary(request):
 def top_10_water(request):
     title = 'TOP 10 water Pokemons'
 
-
     pokemon_list = Pokemon.objects.all().filter(type_1='Water').order_by('-total')[:10]
 
     pokemon_images = __get_pokemon_images(pokemon_list)
-
 
     return render(request,
                   'pokedexdjango/top_10_water.html',
@@ -310,11 +326,9 @@ def top_10_water(request):
 def top_10_hp(request):
     title = 'TOP 10 Pokemons with the biggest health'
 
-
     pokemon_list = Pokemon.objects.all().order_by('-hp')[:10]
 
     pokemon_images = __get_pokemon_images(pokemon_list)
-
 
     return render(request,
                   'pokedexdjango/top_10_hp.html',
@@ -345,4 +359,3 @@ def register(request):
         form = RegisterForm()
 
     return render(request, "register/register.html", {"form": form})
-
