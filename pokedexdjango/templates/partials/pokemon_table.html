@@ -17,6 +17,7 @@
             <th style="width: 5%;">Gen.</th>
             <th style="width: 5%;">Legendary</th>
             <th>Image</th>
+            <th>Favourite</th>
         </tr>
         </tbody>
 
@@ -44,9 +45,19 @@
             </td>
             <td>
                 {% if pokemon_images|get_item:pokemon.poke_id %}
-                <img src="/static/images/{{ pokemon.poke_id }}.jpg" width="100" height="100" onerror="this.onerror=null;this.src='/static/images/default.png';">
+                <img src="/static/images/{{ pokemon.poke_id }}.jpg" width="100" height="100"
+                     onerror="this.onerror=null;this.src='/static/images/default.png';">
                 {% else %}
                 <img src="/static/images/default.png" width="100" height="100">
+                {% endif %}
+            </td>
+            <td>
+                {% if pokemon_favourites|get_item:pokemon.id %}
+                <a href="{% url 'pokedexdjango:remove_fav_pokemon' id=pokemon.id %}" class="btn btn-danger">Remove from
+                    favourite</a>
+                {% else %}
+                <a href="{% url 'pokedexdjango:add_fav_pokemon' id=pokemon.id %}" class="btn btn-success">Add to
+                    favourite</a>
                 {% endif %}
             </td>
         </tr>

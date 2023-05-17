@@ -13,21 +13,21 @@
 {% if is_favourite == False %}
 <div class="row p-2">
     <div class="justify-content-center d-flex">
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="add_to_favourite" value="1">
-            <button type="submit" class="btn btn-success">Add to favourite</button>
-        </form>
+        <a href="{% url 'pokedexdjango:add_fav_pokemon' id=pokemon.id %}" class="btn btn-success">Add to favourite</a>
+<!--        <form method="post" action="{% url 'pokedexdjango:add_fav_pokemon' id=pokemon.id %}">-->
+<!--            {% csrf_token %}-->
+<!--            <button type="submit" class="btn btn-success">Add to favourite</button>-->
+<!--        </form>-->
     </div>
 </div>
 {% else %}
 <div class="row p-2">
     <div class="justify-content-center d-flex">
-        <form method="post">
-            {% csrf_token %}
-            <input type="hidden" name="remove_from_favourite" value="1">
-            <button type="submit" class="btn btn-danger">Remove from favourite</button>
-        </form>
+        <a href="{% url 'pokedexdjango:remove_fav_pokemon' id=pokemon.id %}" class="btn btn-danger">Remove from favourite</a>
+<!--        <form method="post" action="{% url 'pokedexdjango:remove_fav_pokemon' id=pokemon.id %}">-->
+<!--            {% csrf_token %}-->
+<!--            <button type="submit" class="btn btn-danger">Remove from favourite</button>-->
+<!--        </form>-->
     </div>
 </div>
 {% endif %}

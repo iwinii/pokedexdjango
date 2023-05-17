@@ -80,8 +80,6 @@ def pokemon_details(request, id):
     title = 'Pokemon Details'
 
     poke_id_param = id
-    add_to_favourite = request.POST.get('add_to_favourite', '')
-    remove_from_favourite = request.POST.get('remove_from_favourite', '')
     pokemon_details = Pokemon.objects.get(id=poke_id_param)
     current_user = request.user
     is_favourite = False
@@ -91,25 +89,6 @@ def pokemon_details(request, id):
         if my_fav_pokemon != None:
             is_favourite = True
 
-    if request.method == "POST" and current_user.is_authenticated:
-
-        if add_to_favourite == '1':
-            if is_favourite == True:
-                messages.add_message(request, messages.ERROR, 'You already added this pokemon to favourites!')
-                return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
-
-            current_user.favourite_pokemon.add(pokemon_details)
-            current_user.save()
-            return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
-        if remove_from_favourite == '1':
-            if is_favourite == False:
-                messages.add_message(request, messages.ERROR, 'This pokemon is not on your favourite pokemon list.')
-                return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
-
-            current_user.favourite_pokemon.remove(pokemon_details)
-            current_user.save()
-            return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
-
     return render(request,
                   'pokedexdjango/pokemon_details.html',
                   {
@@ -118,8 +97,46 @@ def pokemon_details(request, id):
                       'is_favourite': is_favourite
                   })
 
+def add_fav_pokemon(request, id):
+
+    poke_id_param = id
+    pokemon_details = Pokemon.objects.get(id=poke_id_param)
+    current_user = request.user
+
+    if current_user.is_authenticated == False:
+        messages.add_message(request, messages.ERROR, 'You are not authenticated, please log in.')
+        return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+    my_fav_pokemon = current_user.favourite_pokemon.filter(id=poke_id_param).first()
+    if my_fav_pokemon != None:
+        messages.add_message(request, messages.ERROR, 'This pokemon is already on your favourite pokemon list.')
+        return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+    current_user.favourite_pokemon.add(pokemon_details)
+    current_user.save()
+    return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+def remove_fav_pokemon(request, id):
+    poke_id_param = id
+    pokemon_details = Pokemon.objects.get(id=poke_id_param)
+    current_user = request.user
+
+    if current_user.is_authenticated == False:
+        messages.add_message(request, messages.ERROR, 'You are not authenticated, please log in.')
+        return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+    my_fav_pokemon = current_user.favourite_pokemon.filter(id=poke_id_param).first()
+    if my_fav_pokemon == None:
+        messages.add_message(request, messages.ERROR, 'This pokemon is not on your favourite pokemon list.')
+        return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
+
+    current_user.favourite_pokemon.remove(pokemon_details)
+    current_user.save()
+    return redirect("pokedexdjango:pokemon_details", id=poke_id_param)
 
 def pokemon_list(request):
+
+
     title = 'Pokemon list'
 
     poke_id_param = request.GET.get('poke_id', '')
@@ -186,12 +203,17 @@ def pokemon_list(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
+    # print(pokemon_favourites)
+
     return render(request,
                   'pokedexdjango/pokemon_list.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                       'form_action': request.path,
                       'poke_id_param': poke_id_param,
                       'name_param': name_param,
@@ -209,6 +231,16 @@ def pokemon_list(request):
                   })
 
 
+def __get_pokemon_favourties(pokemon_list, request) -> dict:
+    current_user = request.user
+    pokemon_favourites = dict()
+
+    for pokemon in pokemon_list:
+        my_fav_pokemon = current_user.favourite_pokemon.filter(id=pokemon.id).first()
+        pokemon_favourites[pokemon.id] = my_fav_pokemon is not None
+
+    return pokemon_favourites
+
 def __get_pokemon_images(pokemon_list) -> dict:
     pokemon_images = dict()
 
@@ -225,11 +257,15 @@ def favourite_pokemons(request):
     pokemon_list = current_user.favourite_pokemon.all()
 
     pokemon_images = __get_pokemon_images(pokemon_list)
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
+    print(favourite_pokemons)
     return render(request,
                   'pokedexdjango/favourite_pokemons.html',
                   {
                       'pokemon_list': pokemon_list,
-                      'pokemon_images': pokemon_images
+                      'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 
@@ -250,12 +286,15 @@ def top_10_pokemons(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
     return render(request,
                   'pokedexdjango/top_10_pokemons.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 
@@ -266,12 +305,15 @@ def top_10_attack(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
     return render(request,
                   'pokedexdjango/top_10_attack.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 
@@ -282,12 +324,15 @@ def top_10_defence(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
     return render(request,
                   'pokedexdjango/top_10_defence.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 
@@ -298,12 +343,15 @@ def top_10_not_legendary(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
     return render(request,
                   'pokedexdjango/top_10_not_legendary.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 
@@ -314,12 +362,15 @@ def top_10_water(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
     return render(request,
                   'pokedexdjango/top_10_water.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 
@@ -330,12 +381,15 @@ def top_10_hp(request):
 
     pokemon_images = __get_pokemon_images(pokemon_list)
 
+    pokemon_favourites = __get_pokemon_favourties(pokemon_list, request)
+
     return render(request,
                   'pokedexdjango/top_10_hp.html',
                   {
                       'title': title,
                       'pokemon_list': pokemon_list,
                       'pokemon_images': pokemon_images,
+                      'pokemon_favourites': pokemon_favourites,
                   })
 
 

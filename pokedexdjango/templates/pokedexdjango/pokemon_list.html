@@ -60,7 +60,6 @@
         <div class="col-auto">
             <input type="number" min="1" max="6" step="1" id="generation" name="generation" placeholder="generation" class="form-control" value="{{ generation_param }}">
         </div>
-
     </div>
      <div class="row g-3 pb-1">
         <div class="col-auto">
@@ -98,5 +97,5 @@
 
 </form>
 <br>
-{% include "partials/pokemon_table.html" with pokemon_list=pokemon_list pokemon_images=pokemon_images %}
+{% include "partials/pokemon_table.html" with pokemon_list=pokemon_list pokemon_images=pokemon_images pokemon_favourites=pokemon_favourites %}
 {% endblock  %}
